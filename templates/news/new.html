@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load future %}
+{% block content %}
+{% if error %}
+<p class="error">{{ error }}</p>
+{% endif %}
+{% include "news/form.html" %}
+{% if message %}
+<pre>{{ message }}</pre>
+{% endif %}
+<ul>
+{% for line in log %}
+<li{% if line.error %} class="error"{% endif %}>{{ line.date|date:"j.n.Y H:i" }}: {% if line.source == 'M' %}<pre>{% endif %}{{ line.action }}{% if line.source == 'M' %}</pre>{% endif %}</li>
+{% endfor %}
+</ul>
+{% endblock %}

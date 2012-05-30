@@ -1,0 +1,57 @@
+{% load i18n %}
+{% load future %}
+{% block js %}
+<script src="{{ STATIC_URL }}js/jquery.min.js"></script>
+<script>
+function toggleemailmessage()
+{
+	if ($("#emailmessage").css('display') == 'none')
+	{
+		$("#emailmessage").css('display', 'block');
+	}
+	var msg = {
+	message: $("#viesti").val(),
+	id: {{ form.id }},
+	creator: $("#omanimi").val(),
+	subject: $("#otsikko").val(),
+	csrfmiddlewaretoken: '{{  csrf_token }}'
+	};
+	$.post("/edit/message/", msg, function (data){
+		$("#emailmessage textarea").val(data)
+	});
+
+}
+</script>
+{% endblock %}
+<form action="{% if not form.id %}{% url 'edit' %}{% else %}{% url 'edit' form.id %}{% endif %}" method="POST" id="formid">
+{% csrf_token %}
+<label for="omanimi">{% trans "You name" %}</label>
+<input id="omanimi" type="text" name="name" value="{{ form.creator }}" size="30" required="required" /><br />
+<label for="otsikko">{% trans "Subject" %}</label>
+<input id="otsikko" type="text" name="subject" value="{{ form.subject }}" size="100" required="required" /><br />
+<label for="viesti">{% trans "HTML-formatted message" %}</label>
+<textarea wrap="virtual" id="viesti" rows="12" cols="100" name="message">{% if not form.message %}
+&lt;p>
+
+&lt;/p>
+{% else %}{{ form.message }}{% endif %}
+</textarea><br />
+<label for="facebook" class="checkbox">Facebook</label>
+<input type="checkbox" name="tofacebook" value="tofacebook" id="tofacebook" {% if form.tofacebook %}checked=checked{% endif %} />
+<label for="twitter" class="checkbox">Twitter</label>
+<input type="checkbox" name="totwitter" value="totwitter" id="totwitter" {% if form.totwitter %}checked=checked{% endif %} />
+<br />
+<label for="sendmail" class="checkbox">{% trans "Send email to" %}</label>
+<input type="input" name="emailto" value="{{ form.toemail }}" />
+<input type="hidden" name="newsid" value="{{ form.id }}" />
+<br />
+<div id="emailmessage">
+	<textarea id="email" name="email" rows="12" cols="100"></textarea>
+</div>
+<a href="javascript:toggleemailmessage();">{% trans "Refresh email" %}</a>
+<br />
+<input type="submit" name="addnews" value="{% trans "Save" %}" />
+{% if not form.published %}<input type="submit" name="publish" value="{% trans "Publish" %}" />
+{% else %}<input type="submit" name="unpublish" value="{% trans "Unpublish" %}" />{% endif %}
+{% if form.id %}<input type="submit" name="delete" value="{% trans "Remove" %}"  onclick="return confirmSubmit('{% trans "Delete really?" %}')" />{% endif %}
+</form>

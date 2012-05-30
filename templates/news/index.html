@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load future %}
+{% block content %}
+{% if form %}
+{% include "news/form.html" %}
+{% endif %}
+{% if news_list %}
+<ul>
+{% for news in news_list %}
+{% if not news.published %}
+<div class="tiedote{% if not news.published %} new{% endif %}">
+<h2><a href="{% url 'edit' news.id %}">{{ news.subject }}{% if not news.published %} ({% trans "Draft" %}){% endif %}</a></h2>
+<small class="info">{{ news.creator }} :: {{ news.modifed|date:"j.n.Y H:i" }}{% if news.published %} :: {{ news.published|date:"j.n.Y H:i" }}{% endif %}
+	<div>
+	   <span>
+		<p>{% autoescape off %}{{ news.message }}{% endautoescape %}</p>
+	   </span>
+	 <a href="{% url 'edit' news.id %}">{% trans "Edit this" %}</a>
+	</div>
+</div>
+{% endif %}
+{% empty %}
+  {% trans "No messages found" %}
+{% endfor %}
+<hr />
+{% for news in news_list %}
+
+{% if news.published %}
+<div class="tiedote{% if not news.published %} new{% endif %}">
+<h2>{{ news.subject }}{% if not news.published %} ({% trans "Draft" %}){% endif %}</h2>
+<small class="info">{{ news.creator }} :: {{ news.modifed|date:"j.n.Y H:i" }}{% if news.published %} :: {{ news.published|date:"j.n.Y H:i" }}{% endif %}
+	<div>
+	   <span>
+		<p>{% autoescape off %}{{ news.message }}{% endautoescape %}</p>
+	   </span>
+	 <a href="{% url 'edit' news.id %}">{% trans "Edit this" %}</a>
+	</div>
+</div>
+{% endif %}
+{% endfor %}
+</ul>
+{% endif %}
+{% endblock %}

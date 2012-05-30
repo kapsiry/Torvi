@@ -1,0 +1,5 @@
+env/
+*.pyc
+*.sqlite
+news/local_settings.py
+*.DS_Store

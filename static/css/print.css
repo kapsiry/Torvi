@@ -1,0 +1,23 @@
+
+h1.otsikko, div.menu, div.contentmenu, .logo, div.alternative_formats {
+    display: none;
+}
+
+div.footer {
+    border-top: 1px solid #DBDBD8;
+    padding-top: 2px;
+}
+
+a.kohta {
+    display: none;
+}
+
+table {
+    border-collapse: collapse;
+    page-break-inside: avoid;
+}
+
+td, th {
+    background-color: transparent;
+    border: solid 1px #888;
+}

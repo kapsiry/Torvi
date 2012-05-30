@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block js %}
+<script>
+var hash, expires;
+setTimeout(function() {
+	hash = window.location.hash;
+	hash = hash.substring(1); // remove #
+	hash = hash.split("&",2)
+	token = hash[0].split("=",2)[1]
+	document.getElementById("token").innerHTML = token;
+	document.getElementById("itoken").value = token;
+	
+	expires = hash[1].split("=",2)[1]
+	var now = new Date();
+	now.setSeconds(now.getSeconds() + expires);
+	document.getElementById("iexpires").value = expires;
+	expires = now
+	document.getElementById("expires").innerHTML = expires;
+	
+}, 500)
+</script>
+{% endblock %}
+{% block content %}
+{% if message %}
+{{ message }}
+{% else %}
+<p>{% trans "Token" %}: <span id="token">{{ token }}</span></p>
+<p>{% trans "Expires" %}: <span id="expires">{{ expires|date:"j.n.Y H:i" }}</span></p>
+<form action="" method=POST>
+	{% csrf_token %}
+	<input type="hidden" id="itoken" name="token" value="">
+	<input type="hidden" id="iexpires" name="expires" value="">
+	<input type="submit" value="{% trans "continue" %}" />
+</form>
+{% endif %}
+{% endblock %}

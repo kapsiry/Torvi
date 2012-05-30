@@ -1,0 +1,293 @@
+h1.otsikko {
+    text-transform: uppercase;
+    font-variant: normal;
+    
+    margin-left: 2em;
+    font-weight: lighter;
+    display: inline;
+    
+    white-space: nowrap;
+}
+
+.otsikko_wrapper h1.otsikko {
+    margin: 0px;
+    display: block;
+    position: absolute;
+    bottom: 0px;
+}
+
+.otsikko_wrapper {
+    position: absolute;
+    left: 202px;
+    top: 0px;
+    height: 99px;
+}
+
+span.kapsi {
+    color: #284b5c;
+    font-size: 30pt;
+    margin-right: 0.1em;
+}
+
+span.ikry {
+    color: #35637a;
+    font-size: 20pt;
+}
+
+.logo {
+    position: absolute;
+    left: 8px;
+    top: 8px;
+    background-image: url("../logo.png");
+    width: 190px;
+    height: 190px;
+}
+
+/* Muuta */
+
+html, body {
+    background-color: #EEE;
+    font-size: 14px;
+    font-family: "Bitstream Vera Sans", "Helvetica", "Arial", sans-serif;
+    color: black;
+}
+
+div.mainarea {
+    margin-top: 99px;
+    margin-left: 15px;
+    margin-right: 15px;
+    padding: 0px;
+    
+    max-width: 1280px;
+    min-width: 450px;
+    
+    border: 1px solid #777878;
+    background-color: #e0e4e9; /* valikon taustaväri */
+}
+
+div.right {
+    margin-left: 150px;
+    min-height: 41em;
+    
+    border-left: 1px solid #cdcdca; /* valikon ja sisallon valissa */
+    background-color: #FFFFFF;
+}
+
+div.content {
+    padding: 15px;
+    padding-top: 20px;
+/*     border-left: 1px solid #dee4cf; */
+}
+
+div.alternative_formats {
+    float: right;
+    margin-top: 10px;
+}
+
+div.footer {
+    clear: both;
+    padding: 5px;
+    
+    border-top: 1px solid #D8DBDB;
+    background-color: #e6e6e6;
+    color: #777;
+    font-size: 15px;
+}
+
+div.footer .additional_copyrights {
+    display: inline;
+    margin-left: 5em;
+}
+
+div.footer a, div.footer a:visited {
+    color: #777;
+}
+
+div.footer a:hover {
+    color: #555;
+}
+
+
+/* Valikko */
+
+div.menu {
+    float: left;
+    
+    padding: 5px;
+    padding-right: 5px;
+    padding-top: 95px;
+    margin: 0px;
+    
+    width: 135px;
+
+    color: #111;
+    overflow: auto;
+}
+
+div.menu ul {
+    padding: 0px;
+    margin: 0px;
+    list-style-type: none;
+}
+
+div.menu li {
+    margin: 0px;
+    padding: 0px;
+    margin-bottom: 5px;
+}
+
+div.menu ul ul {
+    margin-left: 15px;
+}
+
+div.menu ul ul li {
+    margin-bottom: 0px;
+}
+
+div.menu .active {
+    background-image: url('nuolialas.gif');
+    background-position: left;
+    background-repeat: no-repeat;
+    margin-left: 0px;
+    padding-left: 10px;
+}
+
+div.menu .submenu {
+    background-image: url('nuoli.gif');
+    background-position: left;
+    background-repeat: no-repeat;
+    margin-left: 2px;
+    padding-left: 8px;
+}
+
+div.menu a.external {
+    background-image: url('linkki.png');
+    background-position: left;
+    background-repeat: no-repeat;
+    margin-left: 0px;
+    padding-left: 10px;
+}
+
+div.menu a:hover.external {
+    background-image: url('linkki-hover.png');
+}
+
+.currentpageitem {
+    color: #111;
+}
+
+div.menu a, div.menu span {
+    margin-left: 10px;
+}
+
+div.menu a span.currentpageitem {
+    margin-left: 0px;
+}
+
+div.menu h3{
+    color: #666;
+    margin-top: 10px;
+    margin-bottom: 0px;
+}
+
+div.menu a, div.menu a:visited, div.contentmenu a, div.contentmenu a:visited {
+    color: #35637A;
+}
+
+div.menu a, div.menu a:visited {
+    text-decoration: none;
+}
+
+div.menu a:hover, div.contentmenu a:hover {
+    color: #549dc1;
+}
+
+div.menu hr {
+    border-bottom: 1px solid #c2c9ab;
+}
+
+li.contentmenu_category {
+    list-style-type: none;
+    display: inline-block;
+    vertical-align: top;
+    padding-right: 1em;
+    padding-bottom: 1em;
+}
+
+
+span.contentmenu_category {
+    display: block;
+    font-size: 20px;
+    font-family: "Arial", "Helvetica", sans-serif;
+    font-weight: bold;
+    margin-bottom: 2px;
+    margin-left: 10px;
+}
+
+.contentmenu li {
+    list-style-type: none;
+}
+
+div.toplistitems {
+    margin-left: 2em;
+    margin-top: 2px;
+}
+
+.contentmenu a {
+    text-decoration: none;
+}
+
+.currentpageitem, span.active {
+    text-decoration: underline;
+}
+
+li.spacebefore {
+    margin-top: 0.5em;
+}
+
+/* contentmenu */
+
+div.contentmenu {
+    margin: 0px;
+    padding: 5px;
+    padding-left: 15px;
+    
+    background-color: #f4fae3;
+    border-left: 1px solid #dee4cf;
+    border-bottom: 1px solid #ccc;
+}
+
+/* Otsikoissa olevat "linkki tähän"-kohdat */
+/* Check-by: 2010-03-20 Poista tämä kun ei ole enää cacheissa, nykyään .anchor */
+a.kohta, a.kohta:visited {
+    font-size: 10px;
+    font-weight: normal;
+    float:right;
+    color: #DBDBD8;
+    margin-top: 0.5em;
+}
+
+p.error {
+    color: #ff2222;
+    font-size: 1.5em;
+}
+
+li.error {
+    color: #ff2222;
+}
+
+label.checkbox {
+    display: inline;
+}
+
+div.new h2 {
+    color: #704060;
+}
+
+#emailmessage {
+    display: none;
+}
+
+h2 a {
+    text-decoration: none;
+}
