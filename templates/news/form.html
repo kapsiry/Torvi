@@ -11,12 +11,12 @@ function toggleemailmessage()
 	}
 	var msg = {
 	message: $("#viesti").val(),
-	id: {{ form.id }},
+	{% if form.id != None %}id: {{ form.id }},{% endif %}
 	creator: $("#omanimi").val(),
 	subject: $("#otsikko").val(),
 	csrfmiddlewaretoken: '{{  csrf_token }}'
 	};
-	$.post("/edit/message/", msg, function (data){
+	$.post("{% url 'message_json' %}", msg, function (data){
 		$("#emailmessage textarea").val(data)
 	});
 

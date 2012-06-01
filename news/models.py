@@ -172,7 +172,7 @@ class News(models.Model):
         self.save()
 
         try:
-            comm = popen("./tiedotteet.sh")
+            comm = popen(COMMIT_SCRIPT)
             retval =  str(comm.read())
             comm.close()
             addLogEntry(self, "Command output: %s" % (retval), error=False,

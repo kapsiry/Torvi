@@ -134,7 +134,7 @@ def FBRenewToken(request, **kwargs):
     # https://developers.facebook.com/docs/authentication/
     url = "https://www.facebook.com/dialog/oauth?client_id=%s" % FACEBOOK_APP_ID
     url += "&scope=publish_actions&redirect_uri=%stoken/&response_type=token" % (
-        FACEBOOK_APP_ID, get_absolute_uri(request))
+        get_absolute_uri(request))
     return redirect(url)
 
 def FBGetToken(request, **kwargs):
@@ -195,7 +195,7 @@ def add_twitter_token(request, **kwargs):
                             consumer_key=TWITTER_CONSUMER_KEY,
                             consumer_secret=TWITTER_CONSUMER_SECRET,
                             header_auth=True)
-        response = requests.post('https://t witter.com/oauth/access_token',
+        response = requests.post('https://twitter.com/oauth/access_token',
                     data={'oauth_verifier' : request.GET['oauth_verifier']},
                                 hooks={'pre_request': oauth_hook})
         opts = parse_qs(response.text)

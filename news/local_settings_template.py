@@ -18,3 +18,5 @@ MESSAGE_FORMAT = u'''Hi,
 #default_email_sender = ''
 # set default address to send messages
 #default_email_to = ''
+
+COMMIT_SCRIPT=''
