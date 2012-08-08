@@ -317,8 +317,8 @@ class News(models.Model):
                     a = ''
                 if b == None:
                     b = ''
-                diff = list(difflib.ndiff(a.splitlines(1),b.splitlines(1)))
-                txt = "%s" % ''.join([i for i in diff if not i.startswith('?')]).strip()
+                diffa = list(difflib.ndiff(a.splitlines(1),b.splitlines(1)))
+                txt = "%s" % ''.join([i for i in diffa if not i.startswith('?')]).strip()
             elif change[0] == None:
                 txt = "%s: () -> '%s'. " % (key, change[1])
             elif change[1] == None:
