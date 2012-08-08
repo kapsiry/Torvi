@@ -115,13 +115,14 @@ class News(models.Model):
             # TODO: implement this
             raise NotImplementedError
         subject = self.subject.strip()
+        if type(subject) == type(""):
+            subject = unicode(subject)
         if message is None or message == "":
             message = format_email({'message' : self.message,
                         'subject' : subject, 'creator' : self.creator})
             if not message:
                 return False
         logentries = Logs.objects.filter(news_id=self.id, source="E", error=False)
-        print("%s" % subject)
         for recipiement in addr.split(','):
             if logentries.filter(action__icontains=recipiement):
                 # don't resend message
