@@ -6914,7 +6914,7 @@ msgstr "Lähetä sähköposti osoitteeseen"
 
 #: templates/news/form.html:51
 msgid "Refresh email"
-msgstr "Haukkaa sähköposti välipalaksi"
+msgstr "Päivitä sähköpostilla lähetteävä versio"
 
 #: templates/news/form.html:54
 msgid "Publish"

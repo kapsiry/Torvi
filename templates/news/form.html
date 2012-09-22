@@ -1,5 +1,6 @@
 {% load i18n %}
 {% load future %}
+{% load isavailable %}
 {% block js %}
 <script src="{{ STATIC_URL }}js/jquery.min.js"></script>
 <script>
@@ -37,9 +38,11 @@ function toggleemailmessage()
 {% else %}{{ form.message }}{% endif %}
 </textarea><br />
 <label for="facebook" class="checkbox">Facebook</label>
-<input type="checkbox" name="tofacebook" value="tofacebook" id="tofacebook" {% if form.tofacebook %}checked=checked{% endif %} />
+<input type="checkbox" name="tofacebook" value="tofacebook" id="tofacebook" 
+	{% if not k|fbavail %}disabled="disabled"{% else %}{% if form.tofacebook %}checked=checked{% endif %}{% endif %} />
 <label for="twitter" class="checkbox">Twitter</label>
-<input type="checkbox" name="totwitter" value="totwitter" id="totwitter" {% if form.totwitter %}checked=checked{% endif %} />
+<input type="checkbox" name="totwitter" value="totwitter" id="totwitter" 
+{% if not k|twavail %}disabled="disabled"{% else %}{% if form.totwitter %}checked=checked{% endif %}{% endif %} />
 <br />
 <label for="sendmail" class="checkbox">{% trans "Send email to" %}</label>
 <input type="input" name="emailto" value="{{ form.toemail }}" />
@@ -53,5 +56,6 @@ function toggleemailmessage()
 <input type="submit" name="addnews" value="{% trans "Save" %}" />
 {% if not form.published %}<input type="submit" name="publish" value="{% trans "Publish" %}" />
 {% else %}<input type="submit" name="unpublish" value="{% trans "Unpublish" %}" />{% endif %}
-{% if form.id %}<input type="submit" name="delete" value="{% trans "Remove" %}"  onclick="return confirmSubmit('{% trans "Delete really?" %}')" />{% endif %}
+{% if form.id %}<input type="submit" name="delete" value="{% trans "Remove" %}" 
+onclick="return confirmSubmit('{% trans "Delete really?" %}')" />{% endif %}
 </form>

@@ -17,6 +17,7 @@ from oauth_hook import OAuthHook
 from json import loads
 from email.utils import formataddr
 import logging
+from pytz import timezone
 
 from news.utils import from4id, testXML, html2text, format_email
 import difflib
@@ -28,6 +29,9 @@ class FacebookToken(models.Model):
     added = models.DateTimeField(auto_now_add=True)
     userid = models.CharField(max_length=256, blank=True)
     expires = models.DateTimeField()
+
+    def token_expired(self):
+        return self.expires < datetime.now(tz=timezone(TIME_ZONE))
 
 def addFBToken(token, expires, userid):
     url = "https://graph.facebook.com/oauth/access_token?"
@@ -42,10 +46,16 @@ def addFBToken(token, expires, userid):
         return
     for t in FacebookToken.objects.all():
         t.delete()
-    expires = datetime.now() + timedelta(seconds=int(expires))
+    expires = datetime.now(tz=timezone(TIME_ZONE)) + timedelta(seconds=int(expires))
     newtoken = FacebookToken(token=token, expires=expires, userid=userid)
     newtoken.save()
     return True
+
+def Facebook_available():
+    for t in FacebookToken.objects.all():
+        if not t.token_expired():
+            return True
+    return False
 
 class TwitterToken(models.Model):
     token = models.CharField(max_length=256, blank=False)
@@ -53,10 +63,20 @@ class TwitterToken(models.Model):
     added = models.DateTimeField(auto_now_add=True)
     expires = models.DateTimeField(blank=True)
 
+    def token_expired(self):
+        return self.expires < datetime.now(tz=timezone(TIME_ZONE))
+
+def Twitter_available():
+    for t in TwitterToken.objects.all():
+        if not t.token_expired():
+            return True
+    return False
+
 # twitter tokens don't expire currently
 def addTwitterToken(token, secret, expires=datetime(day=1, month=1, year=2900)):
     if not token:
         return
+    # delete all other tokens, only newest needed
     for t in TwitterToken.objects.all():
         t.delete()
     newtoken = TwitterToken(token=token, secret=secret, expires=expires)
@@ -77,7 +97,7 @@ LOG_TYPES = (
 class News(models.Model):
     creator    = models.CharField(max_length=256, 
                                 verbose_name = _('Creator'), blank=True)
-    sender     = models.EmailField(max_length=254,
+    sender     = models.EmailField(max_length=256,
                                 verbose_name = _('Sender'),
                                 default=default_email_sender)
     subject    = models.CharField(max_length=512,
@@ -160,7 +180,7 @@ class News(models.Model):
             self.full_clean()
         except ValidationError as error:
             return "%s" % error
-        self.published = datetime.now()
+        self.published = datetime.now(tz=timezone(TIME_ZONE))
         if not self.publishid:
             publishid = News.objects.filter(publishid__isnull=False).aggregate(
                                             Max('publishid'))['publishid__max']

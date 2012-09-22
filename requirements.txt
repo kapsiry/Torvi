@@ -2,3 +2,4 @@ requests==0.10.0
 requests-oauth==0.4.0
 Django==1.4
 libxml2-python==2.6.9
+pytz==2012d
