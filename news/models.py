@@ -80,7 +80,7 @@ class News(models.Model):
     sender     = models.EmailField(max_length=254,
                                 verbose_name = _('Sender'),
                                 default=default_email_sender)
-    subject    = models.CharField(max_length=128,
+    subject    = models.CharField(max_length=512,
                                 verbose_name=_('Subject'), blank=True)
     message    = models.CharField(max_length=50000,
                                 verbose_name=_('Message'), blank=True,
@@ -93,7 +93,7 @@ class News(models.Model):
     publishid  = models.IntegerField(null=True, blank=True, unique=True)
     totwitter  = models.BooleanField(blank=False, default=False,
                                     verbose_name = _("Tweet?"))
-    toemail    = models.CharField(max_length=256, blank=True)
+    toemail    = models.CharField(max_length=8096, blank=True)
     tofacebook = models.BooleanField(blank=False, default=False,
                                     verbose_name = _("Facebook?"))
 
@@ -338,7 +338,7 @@ class News(models.Model):
 
 class Logs(models.Model):
     date   = models.DateTimeField(auto_now_add=True)
-    action = models.CharField(max_length=512, blank=False)
+    action = models.CharField(max_length=50000, blank=False)
     error  = models.BooleanField(default=False)
     source = models.CharField(max_length=1, choices=LOG_TYPES, default='O')
     news   = models.ForeignKey(News)
