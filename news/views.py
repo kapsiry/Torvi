@@ -12,6 +12,7 @@ from oauth_hook import OAuthHook
 import requests
 from urlparse import parse_qs
 import json
+from pytz import timezone
 
 from news.models import *
 from news.utils import from4id, get_absolute_uri, format_email
@@ -146,7 +147,7 @@ def FBGetToken(request, **kwargs):
         token = request.POST['token']
         expires = request.POST['expires']
         userid_req = requests.get("https://graph.facebook.com/me?access_token=%s" % token)
-        print("%s" % userid_req.text)
+        #print("%s" % userid_req.text)
         userid_json = json.loads(userid_req.text)
         if 'id' in userid_json:
             userid = userid_json['id']
@@ -161,9 +162,9 @@ def FBGetToken(request, **kwargs):
                         'message': 'Added successfully!'},
                         context_instance=RequestContext(request))
     else:
-        expires = datetime.now() + date.timedelta(days=60)
+        expires = datetime.now(tz=timezone(TIME_ZONE)) + date.timedelta(days=60)
     if 'expires_in' in request.GET:
-        expires = datetime.now() + date.timedelta(seconds=request.GET['expires_in'])
+        expires = datetime.now(tz=timezone(TIME_ZONE)) + date.timedelta(seconds=request.GET['expires_in'])
     return render_to_response('news/facebook.html', {'token' : token,
                             'expires' : expires},
                             context_instance=RequestContext(request))
@@ -187,6 +188,7 @@ def getTwitterToken(request, **kwargs):
 def add_twitter_token(request, **kwargs):
     if request.method == 'GET':
         if 'oauth_verifier' not in request.GET:
+            print("%s" % vars(request.GET))
             return render_to_response('news/twitter_error.html',
                                      context_instance=RequestContext(request))
         twitter = get_object_or_404(TwitterToken, id=1)

@@ -73,7 +73,7 @@ def Twitter_available():
     return False
 
 # twitter tokens don't expire currently
-def addTwitterToken(token, secret, expires=datetime(day=1, month=1, year=2900)):
+def addTwitterToken(token, secret, expires=datetime(day=1, month=1, year=2900, tzinfo=timezone(TIME_ZONE))):
     if not token:
         return
     # delete all other tokens, only newest needed
@@ -231,7 +231,7 @@ class News(models.Model):
             addLogEntry(self, _('Twitter token not found, cannot send message to Twitter!'),
                         source='T', error=True)
             return False
-        print("%s %s" % (access_token, access_secret))
+        #print("%s %s" % (access_token, access_secret))
         link = "http://kap.si/t/%s" % from4id(self.publishid)
         OAuthHook.consumer_key = TWITTER_CONSUMER_KEY
         OAuthHook.consumer_secret = TWITTER_CONSUMER_SECRET
@@ -240,8 +240,8 @@ class News(models.Model):
         message = render_to_string('news/social_media.txt', {
             'subject' : self.subject, 'link' : link})
         payload = {'status' : message, 'include_entities' : 'true'}
-        retval = requests.post("https://api.twitter.com/1/statuses/update.json", data=payload,
-                                hooks={'pre_request': oauth_hook})
+        retval = requests.post("https://api.twitter.com/1/statuses/update.json",
+                                data=payload, hooks={'pre_request': oauth_hook})
         logger.debug(retval.text)
         retval = loads(retval.text)
         if 'id' in retval:
@@ -252,7 +252,7 @@ class News(models.Model):
                     error=True, source='T')
         if 'error' in retval:
             addLogEntry(self, retval['error'], error=True, source='T')
-        print("%s" % retval)
+        #print("%s" % retval)
 
     def facebook(self):
         """Send messge link to facebook"""
