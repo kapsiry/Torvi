@@ -6,6 +6,9 @@ from django.template import RequestContext
 from django.views.generic import ListView
 from django.utils.datastructures import MultiValueDictKeyError
 from django import forms
+from django.core.urlresolvers import reverse
+
+from twython import Twython, TwythonAuthError, TwythonError
 
 import datetime as date
 from oauth_hook import OAuthHook
@@ -17,6 +20,9 @@ from pytz import timezone
 from news.models import *
 from news.utils import from4id, get_absolute_uri, format_email
 from settings import FACEBOOK_APP_SECRET, FACEBOOK_APP_ID, MESSAGE_FORMAT
+
+import logging
+logger = logging.getLogger(__file__)
 
 class NewsForm(forms.Form):
     class Meta:
@@ -170,47 +176,46 @@ def FBGetToken(request, **kwargs):
                             context_instance=RequestContext(request))
 
 def getTwitterToken(request, **kwargs):
-    oauth_hook = OAuthHook(consumer_key=TWITTER_CONSUMER_KEY,
-                           consumer_secret=TWITTER_CONSUMER_SECRET, header_auth=True)
-    response = requests.post('https://twitter.com/oauth/request_token',
-                            data={'oauth_callback' : '%stoken' %
-                            get_absolute_uri(request)}, hooks={'pre_request': oauth_hook})
-    response = parse_qs(response.text)
-    if 'oauth_token' not in response or 'oauth_token_secret' not in response:
+    twitter = Twython(
+        twitter_token = TWITTER_CONSUMER_KEY,
+        twitter_secret = TWITTER_CONSUMER_SECRET,
+        callback_url = request.build_absolute_uri(
+                                    reverse('news.views.add_twitter_token'))
+        )
+    try:
+        auth_props = twitter.get_authentication_tokens()
+    except TwythonAuthError as e:
+        kwargs['error'] = e
         return render_to_response('news/twitter_error.html', kwargs,
                                     context_instance=RequestContext(request))
-    secret = response['oauth_token_secret'][0]
-    token  = response['oauth_token'][0]
-    tw = addTwitterToken(token=token, secret=secret)
-    return redirect("https://api.twitter.com/oauth/authorize?oauth_token=%s" %
-                    response['oauth_token'][0])
+    
+    request.session['request_token'] = auth_props
+    return HttpResponseRedirect(auth_props['auth_url'])
+
 
 def add_twitter_token(request, **kwargs):
+    
     if request.method == 'GET':
-        if 'oauth_verifier' not in request.GET:
-            print("%s" % vars(request.GET))
-            return render_to_response('news/twitter_error.html',
-                                     context_instance=RequestContext(request))
-        twitter = get_object_or_404(TwitterToken, id=1)
-        oauth_hook = OAuthHook(access_token=twitter.token,
-                            access_token_secret=twitter.secret,
-                            consumer_key=TWITTER_CONSUMER_KEY,
-                            consumer_secret=TWITTER_CONSUMER_SECRET,
-                            header_auth=True)
-        response = requests.post('https://twitter.com/oauth/access_token',
-                    data={'oauth_verifier' : request.GET['oauth_verifier']},
-                                hooks={'pre_request': oauth_hook})
-        opts = parse_qs(response.text)
-        print("%s" % opts)
-        if 'oauth_token' in opts and 'oauth_token_secret' in opts:
-            addTwitterToken(token=opts['oauth_token'][0],
-                                secret=opts['oauth_token_secret'][0])
-            return render_to_response('news/twitter.html', {
-                                    'screen_name' : opts['screen_name'][0]},
-                                      context_instance=RequestContext(request))
-        else:
+        twitter = Twython(
+            twitter_token = TWITTER_CONSUMER_KEY,
+            twitter_secret = TWITTER_CONSUMER_SECRET,
+            oauth_token = request.session['request_token']['oauth_token'],
+            oauth_token_secret = request.session['request_token']['oauth_token_secret'],
+        )
+        oauth_verifier = request.GET['oauth_verifier']
+        try:
+            authorized_tokens = twitter.get_authorized_tokens(oauth_verifier)
+            if 'oauth_token' not in authorized_tokens:
+                raise TwythonError(authorized_tokens)
+            oauth_token = authorized_tokens['oauth_token']
+            oauth_secret = authorized_tokens['oauth_token_secret']
+            tw = addTwitterToken(token=oauth_token, secret=oauth_secret)
+        except TwythonError as e:
+            kwargs['error'] = e
             return render_to_response('news/twitter_error.html', kwargs,
                                     context_instance=RequestContext(request))
+        return render_to_response('news/twitter.html', {},
+                                      context_instance=RequestContext(request))
     else:
         raise Http404
 

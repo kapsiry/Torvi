@@ -11,6 +11,7 @@ from django.core.mail import EmailMessage
 from settings import *
 
 from os import popen
+from subprocess import Popen, PIPE
 from datetime import datetime, timedelta
 import requests
 from oauth_hook import OAuthHook
@@ -75,6 +76,7 @@ def Twitter_available():
 # twitter tokens don't expire currently
 def addTwitterToken(token, secret, expires=datetime(day=1, month=1, year=2900, tzinfo=timezone(TIME_ZONE))):
     if not token:
+        logger.debug("Token not found")
         return
     # delete all other tokens, only newest needed
     for t in TwitterToken.objects.all():
@@ -193,11 +195,18 @@ class News(models.Model):
         self.save()
 
         try:
-            comm = popen(COMMIT_SCRIPT)
-            retval =  str(comm.read())
-            comm.close()
-            addLogEntry(self, "Command output: %s" % (retval), error=False,
+            comm = Popen([COMMIT_SCRIPT],stdout=PIPE, stderr=PIPE)
+            comm.wait()
+            retval =  str(comm.stdout.read())
+            errors = str(comm.stderr.read())
+            returncode = comm.returncode
+            if errors:
+                addLogEntry(self, "Command error: %s" % (error,), error=True,
                         source='P')
+            addLogEntry(self, "Command output: %s" % (retval,), error=False,
+                        source='P')
+            addLogEntry(self, "Command exits with code %s" % (returncode,),
+                        error=False, source='P')
         except Exception as error:
             notice = "Unexcpected error occured while publishing!\n%s" % error
             addLogEntry(self, notice, error=True, source='P')
@@ -224,7 +233,7 @@ class News(models.Model):
         if len(logentries) > 0:
             return True
         try:
-            token = TwitterToken.objects.get(id=1)
+            token = TwitterToken.objects.order_by('-id')[0:1].get()
             access_token = token.token
             access_secret = token.secret
         except TwitterToken.DoesNotExist:
@@ -235,13 +244,20 @@ class News(models.Model):
         link = "http://kap.si/t/%s" % from4id(self.publishid)
         OAuthHook.consumer_key = TWITTER_CONSUMER_KEY
         OAuthHook.consumer_secret = TWITTER_CONSUMER_SECRET
-        oauth_hook = OAuthHook(access_token=token.token,
-                        access_token_secret=token.secret, header_auth=True)
+        oauth_hook = OAuthHook(access_token=access_token,
+                        access_token_secret=access_secret, header_auth=True)
         message = render_to_string('news/social_media.txt', {
             'subject' : self.subject, 'link' : link})
         payload = {'status' : message, 'include_entities' : 'true'}
-        retval = requests.post("https://api.twitter.com/1/statuses/update.json",
-                                data=payload, hooks={'pre_request': oauth_hook})
+        #retval = requests.post("https://api.twitter.com/1/statuses/update.json",
+        #                     data=payload, hooks={'pre_request_oauth': oauth_hook})
+        request = requests.Request('POST', 
+                                    "https://api.twitter.com/1/statuses/update.json",
+                                    data=payload)
+        request = oauth_hook(request)
+        prepared = request.prepare()
+        session = requests.session()
+        retval = session.send(prepared)
         logger.debug(retval.text)
         retval = loads(retval.text)
         if 'id' in retval:
@@ -316,6 +332,7 @@ class News(models.Model):
             diff[key] = (None, new[key])
         #Check for differences
         for key in sd1.intersection(sd2):
+            print("old: %s, new: %s" % (old[key], new[key]))
             if old[key] != new[key]:
                 diff[key] = (old[key], new[key])
         for key in diff:
