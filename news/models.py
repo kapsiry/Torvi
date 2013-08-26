@@ -201,7 +201,7 @@ class News(models.Model):
             errors = str(comm.stderr.read())
             returncode = comm.returncode
             if errors:
-                addLogEntry(self, "Command error: %s" % (error,), error=True,
+                addLogEntry(self, "Command error: %s" % (errors,), error=True,
                         source='P')
             addLogEntry(self, "Command output: %s" % (retval,), error=False,
                         source='P')
@@ -240,7 +240,6 @@ class News(models.Model):
             addLogEntry(self, _('Twitter token not found, cannot send message to Twitter!'),
                         source='T', error=True)
             return False
-        #print("%s %s" % (access_token, access_secret))
         link = "http://kap.si/t/%s" % from4id(self.publishid)
         OAuthHook.consumer_key = TWITTER_CONSUMER_KEY
         OAuthHook.consumer_secret = TWITTER_CONSUMER_SECRET
@@ -268,7 +267,6 @@ class News(models.Model):
                     error=True, source='T')
         if 'error' in retval:
             addLogEntry(self, retval['error'], error=True, source='T')
-        #print("%s" % retval)
 
     def facebook(self):
         """Send messge link to facebook"""
@@ -332,7 +330,6 @@ class News(models.Model):
             diff[key] = (None, new[key])
         #Check for differences
         for key in sd1.intersection(sd2):
-            print("old: %s, new: %s" % (old[key], new[key]))
             if old[key] != new[key]:
                 diff[key] = (old[key], new[key])
         for key in diff:

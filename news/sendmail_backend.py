@@ -1,3 +1,4 @@
+# encoding: utf-8
 """sendmail email backend class."""
 
 import threading
