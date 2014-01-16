@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-30 14:07+0300\n"
+"POT-Creation-Date: 2012-10-08 20:03+0300\n"
 "PO-Revision-Date: 2012-05-22 22:08+0300\n"
 "Last-Translator: Antti Jaakkola <annttu@kapsi.fi>\n"
 "Language-Team: Finnish <fi@li.org>\n"
@@ -901,7 +901,7 @@ msgstr ""
 
 #: env/lib/python2.6/site-packages/django/contrib/admin/templates/admin/pagination.html:11
 #: env/lib/python2.6/site-packages/django/contrib/admin/templates/admin/submit_line.html:3
-#: templates/news/form.html:53
+#: templates/news/form.html:56
 msgid "Save"
 msgstr "Tallenna"
 
@@ -976,7 +976,7 @@ msgstr ""
 #: env/lib/python2.6/site-packages/django/contrib/admin/templates/admin/edit_inline/stacked.html:70
 #: env/lib/python2.6/site-packages/django/contrib/admin/templates/admin/edit_inline/tabular.html:118
 #: env/lib/python2.6/site-packages/django/contrib/comments/templates/comments/delete.html:12
-#: templates/news/form.html:56
+#: templates/news/form.html:59
 msgid "Remove"
 msgstr "Poista"
 
@@ -6800,75 +6800,78 @@ msgstr ""
 msgid "Empty list and '%(class_name)s.allow_empty' is False."
 msgstr ""
 
-#: news/models.py:79
+#: news/models.py:99
 msgid "Creator"
 msgstr "Kirjoittaja"
 
-#: news/models.py:81
+#: news/models.py:101
 msgid "Sender"
 msgstr "Lähettäjä"
 
-#: news/models.py:84 templates/news/form.html:30
+#: news/models.py:104 templates/news/form.html:31
 msgid "Subject"
 msgstr "Otsikko"
 
-#: news/models.py:86
+#: news/models.py:106
 msgid "Message"
 msgstr "Viesti"
 
-#: news/models.py:89
+#: news/models.py:109
 msgid "Email message"
 msgstr "Sähköpostiviesti"
 
-#: news/models.py:95
+#: news/models.py:115
 msgid "Tweet?"
 msgstr ""
 
-#: news/models.py:98
+#: news/models.py:118
 msgid "Facebook?"
 msgstr ""
 
-#: news/models.py:141
+#: news/models.py:162
+#, python-format
 msgid "Email sent successfully to %(recipiement)s"
 msgstr "Sähköposti lähetetty onnistuneesti osioitteeseen %(recipiement)s"
 
-#: news/models.py:154
+#: news/models.py:175
 msgid "Unpublished!"
 msgstr "Poistettu julkaistuista"
 
-#: news/models.py:171
+#: news/models.py:192
 msgid "Published!"
 msgstr "Julkaistu"
 
-#: news/models.py:187
+#: news/models.py:208
 msgid "Email(s) sent successfully!"
 msgstr "Sähköposti(t) lähetetty onnistuneesti"
 
-#: news/models.py:210
+#: news/models.py:231
 msgid "Twitter token not found, cannot send message to Twitter!"
-msgstr "Viestin Twitteriin lähettämistä varten tarvittavaa avainta ei löytynyt!"
+msgstr ""
+"Viestin Twitteriin lähettämistä varten tarvittavaa avainta ei löytynyt!"
 
-#: news/models.py:227
+#: news/models.py:248
 msgid "Message sent successfully to Twitter!"
 msgstr "Viesti lähetetty onnistuneesti Twitteriin!"
 
-#: news/models.py:230
+#: news/models.py:251
 msgid "Failed to send message to Twitter!"
 msgstr "Viesin lähetys Twitteriin epäonnistui!"
 
-#: news/models.py:244
+#: news/models.py:265
 msgid "Facebook token not found, cannot send message to Facebook!"
-msgstr "Viestin Facebookkin lähettämistä varten tarvittavaa avainta ei löytynyt!"
+msgstr ""
+"Viestin Facebookkin lähettämistä varten tarvittavaa avainta ei löytynyt!"
 
-#: news/models.py:264
+#: news/models.py:285
 msgid "Failed to send message to Facebook!"
 msgstr "Viesin lähetys Facebookkiin epäonnistui!"
 
-#: news/models.py:268
+#: news/models.py:289
 msgid "Message sent successfully to Facebook!"
 msgstr "Viesti lähetetty onnistuneesti Facebookkiin!"
 
-#: news/views.py:157
+#: news/views.py:156
 msgid "Failed to add Facebook token!"
 msgstr "Viesin lähetys Facebookkiin epäonnistui!"
 
@@ -6900,31 +6903,31 @@ msgstr "Vanhentuu"
 msgid "continue"
 msgstr "Eteenpäin"
 
-#: templates/news/form.html:28
+#: templates/news/form.html:29
 msgid "You name"
 msgstr "Oma nimesi"
 
-#: templates/news/form.html:32
+#: templates/news/form.html:33
 msgid "HTML-formatted message"
 msgstr "HTML-muotoiltu viesti"
 
-#: templates/news/form.html:44
+#: templates/news/form.html:47
 msgid "Send email to"
 msgstr "Lähetä sähköposti osoitteeseen"
 
-#: templates/news/form.html:51
+#: templates/news/form.html:54
 msgid "Refresh email"
 msgstr "Päivitä sähköpostilla lähetteävä versio"
 
-#: templates/news/form.html:54
+#: templates/news/form.html:57
 msgid "Publish"
 msgstr "Julkaise"
 
-#: templates/news/form.html:55
+#: templates/news/form.html:58
 msgid "Unpublish"
 msgstr "Peru julkaisu"
 
-#: templates/news/form.html:56
+#: templates/news/form.html:60
 msgid "Delete really?"
 msgstr "Poistetaanko oikeasti?"
 
