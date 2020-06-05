@@ -1,4 +1,4 @@
-Django==1.4
+Django==1.11.29
 certifi==0.0.8
 chardet==1.0.1
 gunicorn==0.14.6
