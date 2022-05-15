@@ -1,12 +1,11 @@
 REQUIREMENTS
 ============
 
-* Django 1.4
-* Python2.6
+* Django 3.2
+* Python 3.x
 * gunicorn for production deployment
 * gettext
 * requests
-* requests-oauth
 * libxml2-python
 
 The virtualenv install script installs everything but the Python sqlite and xml2

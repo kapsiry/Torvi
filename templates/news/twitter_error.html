@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
 {% load i18n %}
-{% load future %}
 {% block content %}
 <p>{% trans "Something went wrong, cannot get twitter access_token!" %}</p>
 <p><a href="{% url 'getTwitterToken' %}">{% trans "Please try again!" %}</a>

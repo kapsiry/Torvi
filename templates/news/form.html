@@ -1,6 +1,4 @@
 {% load i18n %}
-{% load future %}
-{% load isavailable %}
 {% block js %}
 <script src="{{ STATIC_URL }}js/jquery.min.js"></script>
 <script>
@@ -36,13 +34,7 @@ function toggleemailmessage()
 
 &lt;/p>
 {% else %}{{ form.message }}{% endif %}
-</textarea><br />
-<label for="facebook" class="checkbox">Facebook</label>
-<input type="checkbox" name="tofacebook" value="tofacebook" id="tofacebook" 
-	{% if not k|fbavail %}disabled="disabled"{% else %}{% if form.tofacebook %}checked=checked{% endif %}{% endif %} />
-<label for="twitter" class="checkbox">Twitter</label>
-<input type="checkbox" name="totwitter" value="totwitter" id="totwitter" 
-{% if not k|twavail %}disabled="disabled"{% else %}{% if form.totwitter %}checked=checked{% endif %}{% endif %} />
+</textarea>
 <br />
 <label for="sendmail" class="checkbox">{% trans "Send email to" %}</label>
 <input type="input" name="emailto" value="{{ form.toemail }}" />
