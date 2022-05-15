@@ -64,7 +64,7 @@ def edit(request, **kwargs):
                 news.full_clean()
             except ValidationError:
                 kwargs['error'] = 'Unvalid xml detected!!!!'
-                kwargs['form'] = form
+                kwargs['form'] = news
                 return new(request, **kwargs)
             news.save()
             kwargs['mid'] = news.id
