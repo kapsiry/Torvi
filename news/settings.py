@@ -1,11 +1,15 @@
 #Django settings for news project.
 #  -*- coding: utf-8 -*-
+import os
+
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
 )
+
+BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 MANAGERS = ADMINS
 
@@ -116,12 +120,29 @@ ROOT_URLCONF = 'news.urls'
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'news.wsgi.application'
 
-TEMPLATE_DIRS = (
-    'templates/'
-    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
-)
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [
+            os.path.join(BASE_DIR, 'templates/'),
+        ],
+        'OPTIONS': {
+            'context_processors': [
+                'django.contrib.auth.context_processors.auth',
+                'django.template.context_processors.debug',
+                'django.template.context_processors.i18n',
+                'django.template.context_processors.media',
+                'django.template.context_processors.static',
+                'django.template.context_processors.tz',
+                'django.contrib.messages.context_processors.messages',
+            ],
+            'loaders': [
+                'django.template.loaders.filesystem.Loader',
+                'django.template.loaders.app_directories.Loader',
+            ]
+        },
+    },
+]
 
 INSTALLED_APPS = (
     'django.contrib.auth',
@@ -179,17 +200,11 @@ LOGGING = {
     }
 }
 
-FACEBOOK_APP_ID = ''
-FACEBOOK_APP_SECRET = ''
-
-TWITTER_CUSTOMER_KEY = ''
-TWITTER_CUSTOMER_SECRET = ''
-
 default_email_sender = 'test.user@example.tld'
 default_email_to = ''
 
-MESSAGE_FOOTER = u'''--
+MESSAGE_FOOTER = '''--
 %(creator)s'''
 
-from local_settings import *
+from .local_settings import *
 

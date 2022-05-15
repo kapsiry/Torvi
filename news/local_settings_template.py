@@ -1,13 +1,6 @@
 # encoding: utf-8
-
-# For Facebook
-FACEBOOK_APP_SECRET = ''
-FACEBOOK_APP_ID = ''
-
-TWITTER_CONSUMER_KEY = ''
-TWITTER_CONSUMER_SECRET = ''
-
-MESSAGE_FORMAT = u'''Hi,
+a
+MESSAGE_FORMAT = '''Hi,
 
 %(message)s
 
