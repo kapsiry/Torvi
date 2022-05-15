@@ -2,7 +2,7 @@
 
 from math import floor
 from django.core.exceptions import ValidationError
-# from libxml2 import parseDoc, parserError
+from libxml2 import parseDoc, parserError
 import re
 from urllib.parse import urljoin
 from subprocess import Popen, PIPE, STDOUT
