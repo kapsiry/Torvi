@@ -6917,7 +6917,7 @@ msgstr "Lähetä sähköposti osoitteeseen"
 
 #: templates/news/form.html:54
 msgid "Refresh email"
-msgstr "Päivitä sähköpostilla lähetteävä versio"
+msgstr "Päivitä sähköpostilla lähetettävä versio"
 
 #: templates/news/form.html:57
 msgid "Publish"
